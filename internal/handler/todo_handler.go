@@ -2,8 +2,11 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 	"todo-app/internal/models"
 	"todo-app/internal/service"
+
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -34,4 +37,21 @@ func (h *TodoHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 	return c.JSON(http.StatusCreated, todo)
+}
+
+func (h *TodoHandler) GetByID(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid ID format"})
+	}
+
+	todo, err := h.service.GetById(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return c.JSON(http.StatusNotFound, map[string]string{"error": "Todo not found"})
+		}
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, todo)
 }

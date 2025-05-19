@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"database/sql"
+	"fmt"
 	"todo-app/internal/models"
 )
 
@@ -54,9 +55,18 @@ func (r *MySQLTodoRepository) Delete(id int) error {
 	panic("unimplemented")
 }
 
-// GetById implements repository.TodoRepository.
 func (r *MySQLTodoRepository) GetById(id int) (*models.Todo, error) {
-	panic("unimplemented")
+	row := r.db.QueryRow("SELECT id, title, completed FROM todo WHERE id = ?", id)
+
+	var todo models.Todo
+	err := row.Scan(&todo.ID, &todo.Title, &todo.Completed)
+
+	if err == sql.ErrNoRows {
+		return nil, fmt.Errorf("todo not found")
+	} else if err != nil {
+		return nil, err
+	}
+	return &todo, nil
 }
 
 // Update implements repository.TodoRepository.

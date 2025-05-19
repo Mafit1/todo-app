@@ -45,7 +45,7 @@ func main() {
 	// Роуты
 	e.GET("/todo", todoHandler.GetAll)
 	e.POST("/todo", todoHandler.Create)
-	// e.GET("/todo/:id", todoHandler.GetByID)
+	e.GET("/todo/:id", todoHandler.GetByID)
 	// e.PUT("/todo/:id", todoHandler.Update)
 	// e.DELETE("/todo/:id", todoHandler.Delete)
 
