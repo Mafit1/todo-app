@@ -40,6 +40,17 @@ REST API server on Go for task management with MySQL support.
    go run cmd/main.go
    ```
 
+### API Endpoints
+
+| Method | Endpoint | Description | Sample request body |
+| ------ | -------- | ----------- | ------------------- |
+| POST   | /todo   | Create task | {"title":"Task 1","completed":false} |
+| GET   | /todo   | Get all tasks | - |
+| GET   | /todo/:id   | Get task with id | - |
+| PUT   | /todo/:id   | Complete task update | {"title":"Updated","completed":true} |
+| PATCH   | /todo/:id   | Partial task update | {"completed":true} |
+| DELETE   | /todo/:id   | Delete task | - |
+
 ### Dependencies
 [Echo](https://echo.labstack.com/) - HTTP framework
 
