@@ -58,11 +58,11 @@ REST API сервер на Go для управления задачами с п
 
 ### Установка
 1. Клонируйте репозиторий:
-   ```bash
+   ```
    git clone https://github.com/Mafit1/todo-app.git
    
 2. Настройте MySQL БД:
-   ```sql
+   ```
    CREATE DATABASE todo_db;
    USE todo_db;
 
@@ -73,16 +73,16 @@ REST API сервер на Go для управления задачами с п
    );
    
 3. Создайе .env файл:
-   ```ini
-     DB_HOST=localhost
-     DB_PORT=3306
-     DB_USER=root
-     DB_PASSWORD=yourpassword
-     DB_NAME=todo_db
+   ```
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=yourpassword
+   DB_NAME=todo_db
 
 4. Запустите сервер:
-   ```bash
-     go run cmd/main.go
+   ```
+   go run cmd/main.go
 
 ### Зависимости
 [Echo](https://echo.labstack.com/) - HTTP фреймворк
