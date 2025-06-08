@@ -3,6 +3,7 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 	"todo-app/internal/models"
 )
 
@@ -50,11 +51,6 @@ func (r *MySQLTodoRepository) Create(todo *models.Todo) error {
 	return nil
 }
 
-// Delete implements repository.TodoRepository.
-func (r *MySQLTodoRepository) Delete(id int) error {
-	panic("unimplemented")
-}
-
 func (r *MySQLTodoRepository) GetById(id int) (*models.Todo, error) {
 	row := r.db.QueryRow("SELECT id, title, completed FROM todo WHERE id = ?", id)
 
@@ -69,7 +65,75 @@ func (r *MySQLTodoRepository) GetById(id int) (*models.Todo, error) {
 	return &todo, nil
 }
 
-// Update implements repository.TodoRepository.
-func (r *MySQLTodoRepository) Update(todo *models.Todo) error {
-	panic("unimplemented")
+func (r *MySQLTodoRepository) Delete(id int) error {
+	result, err := r.db.Exec("DELETE FROM todo WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("todo with ID %d not found", id)
+	}
+
+	return nil
+}
+
+func (r *MySQLTodoRepository) Update(id int, title *string, completed *bool) (*models.Todo, error) {
+	tx, err := r.db.Begin()
+
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	query := "UPDATE todo SET "
+	args := []any{}
+	updates := []string{}
+
+	if title != nil {
+		updates = append(updates, "title = ?")
+		args = append(args, title)
+	}
+	if completed != nil {
+		updates = append(updates, "completed = ?")
+		args = append(args, completed)
+	}
+
+	if len(updates) == 0 {
+		return nil, fmt.Errorf("nothing to update")
+	}
+
+	query += strings.Join(updates, ", ") + " WHERE id = ?"
+	args = append(args, id)
+
+	result, err := tx.Exec(query, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+	if rowsAffected == 0 {
+		return nil, fmt.Errorf("todo with id %d not found", id)
+	}
+
+	row := tx.QueryRow("SELECT id, title, completed FROM todo WHERE id = ?", id)
+	var todo models.Todo
+
+	if err := row.Scan(&todo.ID, &todo.Title, &todo.Completed); err != nil {
+		return nil, err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	return &todo, nil
 }
