@@ -2,8 +2,6 @@
 
 REST API server on Go for task management with MySQL support.
 
-## EN
-
 ## Getting started
 
 ### Requirements
