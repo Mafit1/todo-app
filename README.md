@@ -8,7 +8,7 @@ REST API server on Go for task management with MySQL support.
 - Go 1.20+
 - MySQL 8.0+
 
-### Installation
+### Setup
 1. Clone repository:
    ```
    git clone https://github.com/Mafit1/todo-app.git
