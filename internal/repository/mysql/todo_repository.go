@@ -103,7 +103,6 @@ func (r *MySQLTodoRepository) Update(id int, title *string, completed *bool) (*m
 		updates = append(updates, "completed = ?")
 		args = append(args, completed)
 	}
-
 	if len(updates) == 0 {
 		return nil, fmt.Errorf("nothing to update")
 	}
