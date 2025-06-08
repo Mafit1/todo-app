@@ -12,11 +12,11 @@ REST API server on Go for task management with MySQL support.
 
 ### Installation
 1. Clone repository:
-   ```bash
+   ```
    git clone https://github.com/Mafit1/todo-app.git
    
 2. Setup MySQL database:
-   ```sql
+   ```
    CREATE DATABASE todo_db;
    USE todo_db;
 
@@ -27,16 +27,16 @@ REST API server on Go for task management with MySQL support.
    );
    
 3. Create .env:
-   ```ini
-     DB_HOST=localhost
-     DB_PORT=3306
-     DB_USER=root
-     DB_PASSWORD=yourpassword
-     DB_NAME=todo_db
+   ```
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=yourpassword
+   DB_NAME=todo_db
 
 4. Run server:
-   ```bash
-     go run cmd/main.go
+   ```
+   go run cmd/main.go
 
 ### Dependencies
 [Echo](https://echo.labstack.com/) - HTTP framework
