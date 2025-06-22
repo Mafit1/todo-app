@@ -26,7 +26,7 @@ REST API server on Go for task management with MySQL support.
    );
    ```
    
-3. Setup Redis (Docker example)
+3. Setup Redis (Docker example):
    ```
    docker run -d --name redis -p 6379:6379 redis redis-server --requirepass your_password_here
    ```
