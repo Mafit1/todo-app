@@ -7,6 +7,7 @@ REST API server on Go for task management with MySQL support.
 ### Requirements
 - Go 1.20+
 - MySQL 8.0+
+- Redis 8.0.2+
 
 ### Setup
 1. Clone repository:
@@ -53,5 +54,7 @@ REST API server on Go for task management with MySQL support.
 [Echo](https://echo.labstack.com/) - HTTP framework
 
 [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) - MySQL driver
+
+[go-redis](https://github.com/redis/go-redis) - Redis Go client
 
 [godotenv](https://github.com/joho/godotenv) - Handling .env files
