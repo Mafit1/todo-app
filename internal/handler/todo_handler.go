@@ -21,7 +21,7 @@ func NewTodoHandler(service *service.TodoService) *TodoHandler {
 }
 
 func (h *TodoHandler) GetAll(c echo.Context) error {
-	todos, err := h.service.GetAll()
+	todos, err := h.service.GetAll(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
@@ -46,7 +46,7 @@ func (h *TodoHandler) GetByID(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid ID format"})
 	}
 
-	todo, err := h.service.GetById(id)
+	todo, err := h.service.GetById(c.Request().Context(), id)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
 			return c.JSON(http.StatusNotFound, map[string]string{"error": "Todo not found"})
@@ -63,7 +63,7 @@ func (h *TodoHandler) Delete(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid ID format"})
 	}
 
-	if err := h.service.Delete(id); err != nil {
+	if err := h.service.Delete(c.Request().Context(), id); err != nil {
 		if strings.Contains(err.Error(), "not found") {
 			return c.JSON(http.StatusNotFound, map[string]string{"error": "Todo not found"})
 		}
@@ -84,7 +84,7 @@ func (h *TodoHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request body"})
 	}
 
-	updatedTodo, err := h.service.Update(id, &req)
+	updatedTodo, err := h.service.Update(c.Request().Context(), id, &req)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
 			return c.JSON(http.StatusNotFound, map[string]string{"error": "Todo not found"})

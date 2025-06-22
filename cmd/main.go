@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -12,6 +13,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -32,8 +34,24 @@ func main() {
 	}
 	defer db.Close()
 
+	redisClient := redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf(
+			"%s:%s",
+			os.Getenv("REDIS_ADDRESS"),
+			os.Getenv("REDIS_PORT"),
+		),
+		Password: os.Getenv("REDIS_PASSWORD"),
+		DB:       0,
+	})
+
+	ctx := context.Background()
+	err = redisClient.Ping(ctx).Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	todoRepo := mysql.NewMySQLTodoRepository(db)
-	todoService := service.NewTodoService(todoRepo)
+	todoService := service.NewTodoService(todoRepo, redisClient)
 	todoHandler := handler.NewTodoHandler(todoService)
 
 	e := echo.New()

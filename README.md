@@ -26,16 +26,14 @@ REST API server on Go for task management with MySQL support.
    );
    ```
    
-3. Create .env:
+3. Setup Redis (Docker example)
    ```
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_USER=root
-   DB_PASSWORD=yourpassword
-   DB_NAME=todo_db
+   docker run -d --name redis -p 6379:6379 redis redis-server --requirepass your_password_here
    ```
 
-4. Run server:
+4. Edit .env.example and rename it to .env
+
+5. Run server:
    ```
    go run cmd/main.go
    ```
