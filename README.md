@@ -1,6 +1,6 @@
 # Todo API Server
 
-REST API server on Go for task management with MySQL support.
+REST API server on Go for task management with MySQL support and Redis caching.
 
 ## Getting started
 
