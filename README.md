@@ -4,11 +4,6 @@ REST API server on Go for task management with MySQL support and Redis caching.
 
 ## Getting started
 
-### Requirements
-- Go 1.20+
-- MySQL 8.0+
-- Redis 8.0.2+
-
 ### Setup
 1. Clone repository:
    ```
