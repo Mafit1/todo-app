@@ -13,27 +13,20 @@ REST API server on Go for task management with MySQL support.
    ```
    git clone https://github.com/Mafit1/todo-app.git
    ```
-   
-2. Setup MySQL database:
-   ```
-   CREATE DATABASE todo_db;
-   USE todo_db;
 
-   CREATE TABLE todo (
-     id INT AUTO_INCREMENT PRIMARY KEY,
-     title VARCHAR(255) NOT NULL,
-     completed BOOLEAN DEFAULT FALSE
-   );
+3. Setup MySQL (Docker example):
    ```
-   
-3. Setup Redis (Docker example)
+   docker run --name mysql-todo -e MYSQL_ROOT_PASSWORD=your_password_here -p 3306:3306 -d mysql:8.0
+   ```
+
+2. Setup Redis (Docker example):
    ```
    docker run -d --name redis -p 6379:6379 redis redis-server --requirepass your_password_here
    ```
 
-4. Edit .env.example and rename it to .env
+3. Edit .env.example and rename it to .env
 
-5. Run server:
+4. Run server:
    ```
    go run cmd/main.go
    ```

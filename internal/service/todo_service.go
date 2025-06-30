@@ -132,7 +132,7 @@ func (s *TodoService) getFromCacheOrDB(
 		"completed": strconv.FormatBool(todo.Completed),
 	}).Result()
 	if err != nil {
-		fmt.Printf("Ошибка записи в кэш Redis: %v\n", err)
+		fmt.Printf("Cache write failed: %v\n", err)
 	} else {
 		s.redis.Expire(ctx, key, ttl)
 	}

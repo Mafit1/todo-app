@@ -5,7 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
+	"todo-app/config"
+	"todo-app/internal/database"
 	"todo-app/internal/handler"
 	"todo-app/internal/repository/mysql"
 	"todo-app/internal/service"
@@ -21,30 +22,37 @@ func main() {
 		log.Println("No .env file found")
 	}
 
+	c := config.LoadConfig()
+
 	db, err := sql.Open("mysql", fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?parseTime=true",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME"),
+		c.DBUser,
+		c.DBPassword,
+		c.DBHost,
+		c.DBPort,
+		c.DBName,
 	))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
+	ctx := context.Background()
+
+	if err := database.CreateTodoTable(ctx, db); err != nil {
+		log.Fatalf("failed to create todo table: %v", err)
+	}
+
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf(
 			"%s:%s",
-			os.Getenv("REDIS_ADDRESS"),
-			os.Getenv("REDIS_PORT"),
+			c.RedisHost,
+			c.RedisPort,
 		),
-		Password: os.Getenv("REDIS_PASSWORD"),
+		Password: c.RedisPassword,
 		DB:       0,
 	})
 
-	ctx := context.Background()
 	err = redisClient.Ping(ctx).Err()
 	if err != nil {
 		log.Fatal(err)
@@ -63,5 +71,5 @@ func main() {
 	e.PATCH("/todo/:id", todoHandler.Update)
 	e.DELETE("/todo/:id", todoHandler.Delete)
 
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(c.ServerPort))
 }
