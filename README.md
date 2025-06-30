@@ -13,23 +13,23 @@ REST API server on Go for task management with MySQL support and Redis caching.
 1. Clone repository:
    ```
    git clone https://github.com/Mafit1/todo-app.git
-   ```
-   
-2. Setup MySQL (Docker example):
-   ```
-   docker run --name mysql-todo -e MYSQL_ROOT_PASSWORD=your_password_here -p 3306:3306 -d mysql:8.0
-   ```
-   
-3. Setup Redis (Docker example):
-   ```
-   docker run -d --name redis -p 6379:6379 redis redis-server --requirepass your_password_here
+   cd todo-app
    ```
 
-4. Edit .env.example and rename it to .env
+2. Edit .env.example and rename it to .env
 
-5. Run server:
+3. Run Docker compose:
    ```
-   go run cmd/main.go
+   docker-compose up --build
+   # or
+   docker-compose up --build -d
+   ```
+
+4. Logs (Optional):
+   ```
+   docker-compose logs -f app
+   docker-compose logs -f db
+   docker-compose logs -f redis
    ```
 
 ### API Endpoints
