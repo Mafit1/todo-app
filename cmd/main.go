@@ -13,16 +13,11 @@ import (
 	"todo-app/internal/service"
 
 	_ "github.com/go-sql-driver/mysql"
-	// "github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/redis/go-redis/v9"
 )
 
 func main() {
-	// if err := godotenv.Load(); err != nil {
-	// 	log.Println("No .env file found")
-	// }
-
 	c := config.LoadConfig()
 
 	db, err := connectToDB(*c)

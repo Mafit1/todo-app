@@ -1,4 +1,4 @@
-package repository
+package service
 
 import "todo-app/internal/models"
 

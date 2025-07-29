@@ -9,17 +9,16 @@ import (
 	"time"
 	"todo-app/internal/dto"
 	"todo-app/internal/models"
-	"todo-app/internal/repository"
 
 	"github.com/redis/go-redis/v9"
 )
 
 type TodoService struct {
-	repo  repository.TodoRepository
+	repo  TodoRepository
 	redis *redis.Client
 }
 
-func NewTodoService(repo repository.TodoRepository, redisClient *redis.Client) *TodoService {
+func NewTodoService(repo TodoRepository, redisClient *redis.Client) *TodoService {
 	return &TodoService{repo, redisClient}
 }
 
